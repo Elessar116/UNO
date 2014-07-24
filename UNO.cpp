@@ -4,25 +4,12 @@
 #include"time.h"
 #include<string>
 using namespace std;
-//
+
 bool Card::CheckCurrent(Card& curr)
 {
-	if(curr.number ==Card::number)
-	{
+	if(curr.number == number || curr.type == type|| type==5)
 		return true;
-	}
-	if(curr.type ==Card::type)
-	{
-		return true;
-	}
-	if(Card::type==5)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 Card::Card()
@@ -135,13 +122,6 @@ void Player::Play(Card& curr, CardStack& stack1)
 {
 	int checkcard1 = 0;
 	int pull = 0;
-	/*for(int i = 0;i<stack.num_card;i++)
-	{
-		if(stack.stack[i].CheckCurrent(curr)==false)
-		{
-			checkcard1++;
-		}
-	}*/
 
 	for(int i = 0;i<stack1.num_card;i++)
 	{
@@ -183,10 +163,10 @@ void Player::ChangeColor(Card& curr)
 	//UNO::currentCard.type = color;
 }
 
-//UNO::UNO()
-//{
-//
-//}
+UNO::UNO()
+{
+	UNO(2);
+}
 
 UNO::UNO(int num_player)
 {
@@ -196,79 +176,24 @@ UNO::UNO(int num_player)
 	tableCard.num_card = 80;
 	tableCard.stack = new Card[tableCard.num_card];
 	
-	
-	for(int j = 0,k = 0;j<19;j+=2,k++)
-	{
-		if(j == 0)
-		{
-			tableCard.stack[j].number = 0;
-			tableCard.stack[j].type = 1;
+	for (int type = 1; type <= 5; ++type) {
+		int num = (type - 1) * 19;
+
+		if (type == 5) {
+			for (int i = 0; i <= 4; ++i)
+				tableCard.stack[num + i].number = 10,
+				tableCard.stack[num + i].type   = type;
+			break;
 		}
-		else
-		{
-			tableCard.stack[j-1].number = k;
-			tableCard.stack[j-1].type = 1;
-			tableCard.stack[j].number = k;
-			tableCard.stack[j].type = 1;
+
+		tableCard.stack[num].number = 0;
+		tableCard.stack[num].type = type;
+
+		for (int i = 1; i <= 9; ++i) {
+			tableCard.stack[num + i].number = tableCard.stack[num + i + 9].number = i;
+			tableCard.stack[num + i].type   = tableCard.stack[num + i + 9].type   = type;
 		}
 	}
-	for(int j = 19,k = 0;j<38;j+=2,k++)
-	{
-		if(j == 19)
-		{
-			tableCard.stack[j].number = 0;
-			tableCard.stack[j].type = 2;
-		}
-		else
-		{
-			tableCard.stack[j-1].number = k;
-			tableCard.stack[j-1].type = 2;
-			tableCard.stack[j].number = k;
-			tableCard.stack[j].type = 2;
-		}
-	}
-
-	for(int j = 38,k = 0;j<57;j+=2,k++)
-	{
-		if(j == 38)
-		{
-			tableCard.stack[j].number = 0;
-			tableCard.stack[j].type = 3;
-		}
-		else
-		{
-			tableCard.stack[j-1].number = k;
-			tableCard.stack[j-1].type = 3;
-			tableCard.stack[j].number = k;
-			tableCard.stack[j].type = 3;
-		}
-	}
-
-
-	for(int j = 57,k = 0;j<76;j+=2,k++)
-	{
-		if(j == 57)
-		{
-			tableCard.stack[j].number = 0;
-			tableCard.stack[j].type = 4;
-		}
-		else
-		{
-			tableCard.stack[j-1].number = k;
-			tableCard.stack[j-1].type = 4;
-			tableCard.stack[j].number = k;
-			tableCard.stack[j].type = 4;
-		}
-	}
-
-	for(int j = 76;j<=80;j++)
-	{
-			tableCard.stack[j].number = 10;
-			tableCard.stack[j].type = 5;
-	}
-
-
-
 }
 
 void UNO::shuffle()
@@ -332,12 +257,13 @@ void UNO::Game()
 	cout << "現在的牌為:";
 	currentCard.show();
 	cout <<endl;
+	pFunc func = &Player::Play;
+	
 	for(int i = 0;i<num;i++)
 	{
 		cout <<"現在輪到玩家:"<<list[i].name<<endl;
 		cout <<"他的牌有：";
 		list[i].Display();
-		list[i].Play(currentCard,list[i].myCard);
-
+		(list[i].*func)(currentCard,list[i].myCard);
 	}
 }
