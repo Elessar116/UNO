@@ -30,6 +30,7 @@ class Player
 {
 public:
 	string name;
+	int pull;
 	CardStack myCard;
 	Player* next;								// point to the next player
 	void Display();								// Display the cards in hand and assign them numbers to let users choose
@@ -43,7 +44,7 @@ public:
 												// If the player uses “wildcard” to change the color of the current card on the table 
 												// Ask the user to assign a color from the four: red, yellow, green, or blue. 
 };
-typedef void (Player::*pFunc)(Card& curr, CardStack& stack);
+typedef void (Player::*pFunc)(Card& curr, CardStack& stack1);
 												// Use member function pointer to access the needed function in sequence 
 
 class UNO
@@ -57,7 +58,7 @@ public:
 	UNO(int);									// assign the number of players
 	void shuffle();								// put the extra card into the stack
 	void deal();								// distribute cards to players at the startup of the UNO game
-	void checkUNO();
+	bool checkUNO(int);
 												// check if there is someone that has no card, that is, someone that wins,
 												// or someone who has only one card
 												// the player has to say “UNO!"
