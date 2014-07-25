@@ -26,6 +26,7 @@ Card& Card::operator=(const Card& card)
 }
 void Card::show()
 {
+<<<<<<< HEAD
 	switch (type) {
 		case 5:
 			cout << "Wildcard" << "  "; break;
