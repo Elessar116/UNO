@@ -1,29 +1,43 @@
-#include"stdafx.h"
-#include<iostream>
-#include"UNO.h"
-#include<string>
+#include "stdafx.h"
+
+#include "UNO.h"
+
 using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	
 	int num_player = 0;
-	cout << "è¼¸å…¥éŠæˆ²äººæ•¸:";
+	cout << "¿é¤J¹CÀ¸¤H¼Æ:";
 	cin  >> num_player;
 	cout << endl;
 	UNO uno1(num_player);
 	for(int i = 0;i<num_player;i++)
 	{
-		cout <<"è¼¸å…¥ç¬¬"<<i+1<<"ä½çŽ©å®¶åç¨±:"<<endl;
+		cout <<"¿é¤J²Ä"<<i+1<<"¦ìª±®a¦WºÙ:"<<endl;
 		cin  >> uno1.list[i].name;
 	}
-	cout <<"æ‰€æœ‰çŽ©å®¶åç¨±:"<<endl;
+	cout <<"©Ò¦³ª±®a¦WºÙ:"<<endl;
 	for(int i = 0;i<num_player;i++)
 	{
 		cout << uno1.list[i].name<<endl;
 	}
+	
 	uno1.shuffle();
 	uno1.deal();
+	////¥H¤U¬°ÀË¬d
+	//for(int i = 0;i<uno1.tableCard.num_card;i++)
+	//{
+	//	uno1.tableCard.stack[i].show();
+	//	if(i%5 == 0 && i!=0)
+	//		cout<<endl;
+	//}
+	////¥H¤W¬°ÀË¬d
 	uno1.Game();
+
+	
 	cout <<endl;
+
+	
 	return 0;
 }

@@ -1,68 +1,58 @@
 #include"stdafx.h"
-#include<iostream>
 #include"UNO.h"
-#include"time.h"
-#include<string>
 using namespace std;
 
 bool Card::CheckCurrent(Card& curr)
 {
-	if(curr.number == Card::number || curr.type == Card::type|| Card::type==5)
+	if(curr.number == Card::number || curr.type == this->type || this->type == 5)
 		return true;
 	return false;
 }
 Card::Card()
 {
-	int type = 0;
-	int number = 0;
+	type = 0;
+	number = 0;
 }
-Card::Card(Card& c2)
+Card::Card(Card& card)
 {
-	Card::type = c2.type;
-	Card::number = c2.number;
+	this->type = card.type;
+	this->number = card.number;
 }
-Card& Card::operator=(const Card& card1)
+Card& Card::operator=(const Card& card)
 {
-	Card::number = card1.number;
-	Card::type = card1.type;
+	this->number = card.number;
+	this->type = card.type;
 	return *this;
 }
 void Card::show()
 {
-		if(type == 5)
-		{
-			cout <<"Wildcard"<<"  ";
-		}
-		if(type == 4)
-		{
-			cout <<"é»ƒè‰²"<<number<<"  ";
-		}
-		if(type == 3)
-		{
-			cout <<"ç´…è‰²"<<number<<"  ";
-		}
-		if(type == 2)
-		{
-			cout <<"ç¶ è‰²"<<number<<"  ";
-		}
-		if(type == 1)
-		{
-			cout <<"è—è‰²"<<number<<"  ";
-		}
+	switch (type) {
+		case 5:
+			cout << "Wildcard" << "  "; break;
+		case 4:
+			cout << "¶À¦â"; break;
+		case 3:
+			cout << "¬õ¦â"; break;
+		case 2:
+			cout << "ºñ¦â"; break;
+		case 1:
+			cout << "ÂÅ¦â"; break;
+	}
+	if (type != 5) cout << number << "  ";
 }
-CardStack::CardStack(CardStack& c1)
+CardStack::CardStack(CardStack& cardStack)
 {
-	CardStack::num_card = c1.num_card;
-	CardStack::stack = new Card[num_card];
+	this->num_card = cardStack.num_card;
+	this->stack = new Card[num_card];
 	for(int i = 0;i<num_card;i++)
 	{
-		CardStack::stack[i] = c1.stack[i];
+		this->stack[i] = cardStack.stack[i];
 	}
 }
 CardStack::CardStack()
 {
-	stack = 0;
-	num_card = 0;
+	num_card = 80;
+	this->stack = new Card[this->num_card];
 }
 Card CardStack::Pop()
 {
@@ -70,11 +60,14 @@ Card CardStack::Pop()
 }
 void CardStack::Shuffle(Card& temp)
 {
-	num_card++;
+	/*
+	/// may causes memery leaks cause it doesn't
+	/// seems to release the 'stack' that CardStack originally hold.
 	Card* tempstack = new Card[num_card];
+	/// i shold be ranged (0, num_card - 2)
 	for(int i = 0;i<num_card;i++)
 	{
-		tempstack[i] = stack[i];
+	tempstack[i] = stack[i];
 	}
 	tempstack[num_card-1] = temp;
 	int numb1 = 0;
@@ -84,6 +77,14 @@ void CardStack::Shuffle(Card& temp)
 	stack[numb1] = stack[num_card-1];
 	stack[num_card-1] = tempc;
 	stack = tempstack;
+	*/
+	// the cards are limited to 80, 
+	// so it might needn't to allocate new memery space
+	num_card++;
+	srand((unsigned int)time(NULL));
+	int index = rand() % num_card;
+	stack[num_card - 1] = stack[index];
+	stack[index] = temp;
 }
 void Player::Display()
 {
@@ -95,19 +96,19 @@ void Player::Display()
 		}
 		if(myCard.stack[i].type == 4)
 		{
-			cout <<"<"<<i+1<<">"<<"é»ƒè‰²"<<myCard.stack[i].number<<"  ";
+			cout <<"<"<<i+1<<">"<<"¶À¦â"<<myCard.stack[i].number<<"  ";
 		}
 		if(myCard.stack[i].type == 3)
 		{
-			cout <<"<"<<i+1<<">"<<"ç´…è‰²"<<myCard.stack[i].number<<"  ";
+			cout <<"<"<<i+1<<">"<<"¬õ¦â"<<myCard.stack[i].number<<"  ";
 		}
 		if(myCard.stack[i].type == 2)
 		{
-			cout <<"<"<<i+1<<">"<<"ç¶ è‰²"<<myCard.stack[i].number<<"  ";
+			cout <<"<"<<i+1<<">"<<"ºñ¦â"<<myCard.stack[i].number<<"  ";
 		}
 		if(myCard.stack[i].type == 1)
 		{
-			cout <<"<"<<i+1<<">"<<"è—è‰²"<<myCard.stack[i].number<<"  ";
+			cout <<"<"<<i+1<<">"<<"ÂÅ¦â"<<myCard.stack[i].number<<"  ";
 		}
 	}
 	cout <<endl;
@@ -126,12 +127,13 @@ void Player::Play(Card& curr, CardStack& stack1)
 	}
 	if(checkcard1==0)
 	{
-		cout <<"æ²’ç‰Œå¯å‡º,æŠ½ä¸€å¼µç‰Œ"<<endl;
-		myCard.Shuffle(stack1.Pop());
+		cout <<"¨SµP¥i¥X,©â¤@±iµP"<<endl;
+		myCard.Shuffle(stack1.Pop()); 
+		// why shuffle ? know what you mean, but...why not another method XD
 	}
 	else
 	{
-		cout << "å¯å‡ºçš„ç‰Œæœ‰:";
+		cout << "¥i¥XªºµP¦³:";
 		for(int i = 0;i<myCard.num_card;i++)
 		{
 			if(myCard.stack[i].CheckCurrent(curr))
@@ -140,7 +142,7 @@ void Player::Play(Card& curr, CardStack& stack1)
 				myCard.stack[i].show();
 			}
 		}
-		cout <<"é¸ä¸€å¼µç‰Œå‡º";
+		cout <<"¿ï¤@±iµP¥X";
 		cin >> pull;
 		if(myCard.stack[pull-1].CheckCurrent(curr))
 		{
@@ -151,7 +153,7 @@ void Player::Play(Card& curr, CardStack& stack1)
 		}
 		else
 		{
-			cout <<"é¸çš„ç‰Œä¸èƒ½å‡ºï¼ŒæŠ½ä¸€å¼µç‰Œ"<<endl;
+			cout <<"¿ïªºµP¤£¯à¥X¡A©â¤@±iµP"<<endl;
 			myCard.Shuffle(stack1.Pop());
 			pull = 0;
 		}
@@ -162,7 +164,7 @@ void Player::ChangeColor(Card& curr)
 	int color = 0;
 	if(curr.type==5)
 	{
-		cout << "é¸ä¸€å€‹é¡è‰²:"<<"  <1>è—è‰²  "<<"  <2>ç¶ è‰²  "<<"  <3>ç´…è‰²  "<<"  <4>é»ƒè‰²  ";
+		cout << "¿ï¤@­ÓÃC¦â:"<<"  <1>ÂÅ¦â  "<<"  <2>ºñ¦â  "<<"  <3>¬õ¦â  "<<"  <4>¶À¦â  ";
 		cin >>color;
 		curr.type = color;
 		curr.number = 100;
@@ -177,8 +179,8 @@ UNO::UNO(int num_player)
 	num = num_player;
 	list = new Player[num];
 
-	tableCard.num_card = 80;
-	tableCard.stack = new Card[tableCard.num_card];
+	//tableCard.num_card = 80;
+	//tableCard.stack = new Card[tableCard.num_card];
 
 	for (int type = 1; type <= 5; ++type) {
 		int num = (type - 1) * 19;
@@ -242,7 +244,7 @@ bool UNO::checkUNO(int playernum)
 	}
 	if(list[playernum].myCard.num_card ==0)
 	{
-		cout << endl << "ç©å®¶" << list[playernum].name << "ç²å‹!!!";
+		cout << endl << "ª±®a" << list[playernum].name << "Àò³Ó!!!";
 		iswin = true;
 	}
 	return iswin;
@@ -255,11 +257,11 @@ void UNO::Game()
 	{
 		for(int i = 0;i<num;i++)
 		{
-			cout << endl << "ç¾åœ¨çš„ç‰Œç‚º:";
+			cout << endl << "²{¦bªºµP¬°:";
 			currentCard.show();
 			cout <<endl;
-			cout <<"ç¾åœ¨è¼ªåˆ°ç©å®¶:"<<list[i].name<<endl;
-			cout <<"ä»–çš„ç‰Œæœ‰ï¼š";
+			cout <<"²{¦b½ü¨ìª±®a:"<<list[i].name<<endl;
+			cout <<"¥LªºµP¦³¡G";
 			list[i].Display();
 			(list[i].*func)(currentCard,tableCard);
 			if(list[i].pull!=0)
@@ -280,5 +282,5 @@ void UNO::Game()
 			}
 		}
 	}while(!win);
-	cout << endl << "éŠæˆ²çµæŸ" << endl;
+	cout << endl << "¹CÀ¸µ²§ô" << endl;
 }

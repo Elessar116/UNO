@@ -1,5 +1,11 @@
 #ifndef UNO_H
 #define UNO_H
+
+#include <time.h>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
 using namespace std;
 
 class Card
@@ -13,6 +19,8 @@ public:
 	int number; 
 	bool CheckCurrent(Card&);					// check to see if it is allowed to put this card on the table after the current card 
 };
+
+
 class CardStack
 {
 public:
@@ -23,6 +31,7 @@ public:
 	Card Pop();
 	void Shuffle(Card&);
 };
+
 class Player
 {
 public:
@@ -37,11 +46,13 @@ public:
 												// out of range or there is no card to put on the table, pass and take a card from the 
 												// stack.
 	void ChangeColor(Card&);
-												// If the player uses ‚Äúwildcard‚Äù to change the color of the current card on the table 
+
+												// If the player uses °ßwildcard°® to change the color of the current card on the table 
 												// Ask the user to assign a color from the four: red, yellow, green, or blue. 
 };
 typedef void (Player::*pFunc)(Card& curr, CardStack& stack1);
 												// Use member function pointer to access the needed function in sequence 
+
 class UNO
 {
 public:
@@ -56,9 +67,11 @@ public:
 	bool checkUNO(int);
 												// check if there is someone that has no card, that is, someone that wins,
 												// or someone who has only one card
-												// the player has to say ‚ÄúUNO!"
+												// the player has to say °ßUNO!"
 	void Game();
 												// The function calls Play(...) function of every Player in the list by member function 
 												// pointer
 };
+
+
 #endif
