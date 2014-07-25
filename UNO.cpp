@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include"stdafx.h"
 #include<iostream>
 #include"UNO.h"
 #include"time.h"
@@ -11,7 +11,6 @@ bool Card::CheckCurrent(Card& curr)
 		return true;
 	return false;
 }
-
 Card::Card()
 {
 	int type = 0;
@@ -22,7 +21,12 @@ Card::Card(Card& c2)
 	Card::type = c2.type;
 	Card::number = c2.number;
 }
-
+Card& Card::operator=(const Card& card1)
+{
+	Card::number = card1.number;
+	Card::type = card1.type;
+	return *this;
+}
 void Card::show()
 {
 		if(type == 5)
@@ -46,56 +50,41 @@ void Card::show()
 			cout <<"藍色"<<number<<"  ";
 		}
 }
-
-
 CardStack::CardStack(CardStack& c1)
 {
-
 	CardStack::num_card = c1.num_card;
 	CardStack::stack = new Card[num_card];
 	for(int i = 0;i<num_card;i++)
 	{
 		CardStack::stack[i] = c1.stack[i];
 	}
-
-
 }
 CardStack::CardStack()
 {
 	stack = 0;
 	num_card = 0;
-
 }
-
-
 Card CardStack::Pop()
 {
 	return stack[--num_card];
 }
-
 void CardStack::Shuffle(Card& temp)
 {
 	num_card++;
 	Card* tempstack = new Card[num_card];
 	for(int i = 0;i<num_card;i++)
 	{
-		tempstack[i].number =stack[i].number;
-		tempstack[i].type =stack[i].type;
+		tempstack[i] = stack[i];
 	}
-	tempstack[num_card-1].number = temp.number;
-	tempstack[num_card-1].type = temp.type;
+	tempstack[num_card-1] = temp;
 	int numb1 = 0;
 	srand(static_cast<unsigned int>(time(NULL)));
 	numb1 = rand()%num_card;
 	Card tempc(stack[numb1]);
-	stack[numb1].number = stack[num_card-1].number;
-	stack[numb1].type = stack[num_card-1].type;
-	stack[num_card-1].number = tempc.number;
-	stack[num_card-1].type = tempc.type;
-	
+	stack[numb1] = stack[num_card-1];
+	stack[num_card-1] = tempc;
 	stack = tempstack;
 }
-
 void Player::Display()
 {
 	for(int i = 0;i<myCard.num_card;i++)
@@ -120,7 +109,6 @@ void Player::Display()
 		{
 			cout <<"<"<<i+1<<">"<<"藍色"<<myCard.stack[i].number<<"  ";
 		}
-		//cout <<myCard.stack[i].type<<"號碼："<< myCard.stack[i].number<<"  ";
 	}
 	cout <<endl;
 }
@@ -150,7 +138,6 @@ void Player::Play(Card& curr, CardStack& stack1)
 			{
 				cout<<"<"<<i+1<<">";
 				myCard.stack[i].show();
-				//checkcard1++;
 			}
 		}
 		cout <<"選一張牌出";
@@ -158,12 +145,9 @@ void Player::Play(Card& curr, CardStack& stack1)
 		if(myCard.stack[pull-1].CheckCurrent(curr))
 		{
 			Card tempcard;
-			tempcard.number = myCard.stack[pull-1].number;
-			tempcard.type = myCard.stack[pull-1].type;
-			myCard.stack[pull-1].number = myCard.stack[myCard.num_card-1].number;
-			myCard.stack[pull-1].type = myCard.stack[myCard.num_card-1].type;
-			myCard.stack[myCard.num_card-1].number = tempcard.number;
-			myCard.stack[myCard.num_card-1].type = tempcard.type;
+			tempcard = myCard.stack[pull-1];
+			myCard.stack[pull-1] = myCard.stack[myCard.num_card-1];
+			myCard.stack[myCard.num_card-1] = tempcard;
 		}
 		else
 		{
@@ -172,9 +156,7 @@ void Player::Play(Card& curr, CardStack& stack1)
 			pull = 0;
 		}
 	}
-
 }
-
 void Player::ChangeColor(Card& curr)
 {
 	int color = 0;
@@ -186,12 +168,10 @@ void Player::ChangeColor(Card& curr)
 		curr.number = 100;
 	}
 }
-
 UNO::UNO()
 {
 	UNO(2);
 }
-
 UNO::UNO(int num_player)
 {
 	num = num_player;
@@ -209,17 +189,14 @@ UNO::UNO(int num_player)
 				tableCard.stack[num + i].type   = type;
 			break;
 		}
-
 		tableCard.stack[num].number = 0;
 		tableCard.stack[num].type = type;
-
 		for (int i = 1; i <= 9; ++i) {
 			tableCard.stack[num + i].number = tableCard.stack[num + i + 9].number = i;
 			tableCard.stack[num + i].type   = tableCard.stack[num + i + 9].type   = type;
 		}
 	}
 }
-
 void UNO::shuffle()
 {
 	CardStack temp(tableCard);
@@ -238,7 +215,6 @@ void UNO::shuffle()
 		temp.stack[numb].number = 100;
 	}
 }
-
 void UNO::deal()
 {
 	for(int i = 0;i<num;i++)
@@ -251,15 +227,12 @@ void UNO::deal()
 		{
 			Card temp1(tableCard.Pop());
 			list[k].myCard.num_card = 3;
-			list[k].myCard.stack[j].number = temp1.number;
-			list[k].myCard.stack[j].type = temp1.type;
+			list[k].myCard.stack[j] = temp1;
 		}
 	}
 	Card tempcard2(tableCard.Pop());
-	currentCard.number = tempcard2.number;
-	currentCard.type = tempcard2.type;
+	currentCard = tempcard2;
 }
-
 bool UNO::checkUNO(int playernum)
 {
 	bool iswin = false;
@@ -274,7 +247,6 @@ bool UNO::checkUNO(int playernum)
 	}
 	return iswin;
 }
-
 void UNO::Game()
 {
 	pFunc func = &Player::Play;
@@ -292,10 +264,13 @@ void UNO::Game()
 			(list[i].*func)(currentCard,tableCard);
 			if(list[i].pull!=0)
 			{
+				if(currentCard.number == 100)
+				{
+					currentCard.type = 5;
+				}
 				tableCard.Shuffle(currentCard);
 				Card tempcard1(list[i].myCard.Pop()); 
-				currentCard.number = tempcard1.number;
-				currentCard.type = tempcard1.type;
+				currentCard = tempcard1;
 				list[i].ChangeColor(currentCard);
 			}
 			if(checkUNO(i))
@@ -305,14 +280,5 @@ void UNO::Game()
 			}
 		}
 	}while(!win);
-
 	cout << endl << "遊戲結束" << endl;
-	////以下為檢查
-	//for(int i = 0;i<tableCard.num_card;i++)
-	//{
-	//	tableCard.stack[i].show();
-	//	if(i%5 == 0)
-	//		cout<<endl;
-	//}
-	////以上為檢查
 }
