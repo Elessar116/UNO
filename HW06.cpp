@@ -1,10 +1,9 @@
-#include "stdafx.h"
-#include "UNO.h"
+#include"stdafx.h"
+#include"UNO.h"
 using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	
 	int num_player = 0;
 	cout << "輸入遊戲人數:";
 	cin  >> num_player;
@@ -20,7 +19,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		cout << uno1.list[i].name<<endl;
 	}
-	
 	uno1.shuffle();
 	uno1.deal();
 	uno1.Game();
