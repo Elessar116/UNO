@@ -29,26 +29,44 @@ Card& Card::operator=(const Card& card1)
 }
 void Card::show()
 {
-		if(type == 5)
+	if(number == 100)
+	{
+		switch(type)
 		{
-			cout <<"Wildcard"<<"  ";
+			case 1:
+				cout <<"藍色";
+				break;
+			case 2:
+				cout <<"綠色";
+				break;
+			case 3:
+				cout <<"紅色";
+				break;
+			case 4:
+				cout <<"黃色";
+				break;
 		}
-		if(type == 4)
-		{
-			cout <<"黃色"<<number<<"  ";
-		}
-		if(type == 3)
-		{
-			cout <<"紅色"<<number<<"  ";
-		}
-		if(type == 2)
-		{
-			cout <<"綠色"<<number<<"  ";
-		}
-		if(type == 1)
-		{
-			cout <<"藍色"<<number<<"  ";
-		}
+	}
+	else if(type == 5)
+	{
+		cout <<"Wildcard"<<"  ";
+	}
+	else if(type == 4)
+	{
+		cout <<"黃色"<<number<<"  ";
+	}
+	else if(type == 3)
+	{
+		cout <<"紅色"<<number<<"  ";
+	}
+	else if(type == 2)
+	{
+		cout <<"綠色"<<number<<"  ";
+	}
+	else if(type == 1)
+	{
+		cout <<"藍色"<<number<<"  ";
+	}
 }
 CardStack::CardStack(CardStack& c1)
 {
