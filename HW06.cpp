@@ -1,7 +1,5 @@
 #include "stdafx.h"
-
 #include "UNO.h"
-
 using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -25,19 +23,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	uno1.shuffle();
 	uno1.deal();
-	////�H�U���ˬd
-	//for(int i = 0;i<uno1.tableCard.num_card;i++)
-	//{
-	//	uno1.tableCard.stack[i].show();
-	//	if(i%5 == 0 && i!=0)
-	//		cout<<endl;
-	//}
-	////�H�W���ˬd
 	uno1.Game();
-
-	
 	cout <<endl;
-
-	
 	return 0;
 }
