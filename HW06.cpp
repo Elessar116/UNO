@@ -8,16 +8,16 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	
 	int num_player = 0;
-	cout << "¿é¤J¹CÀ¸¤H¼Æ:";
+	cout << "è¼¸å…¥éŠæˆ²äººæ•¸:";
 	cin  >> num_player;
 	cout << endl;
 	UNO uno1(num_player);
 	for(int i = 0;i<num_player;i++)
 	{
-		cout <<"¿é¤J²Ä"<<i+1<<"¦ìª±®a¦WºÙ:"<<endl;
+		cout <<"è¼¸å…¥ç¬¬"<<i+1<<"ä½çŽ©å®¶åç¨±:"<<endl;
 		cin  >> uno1.list[i].name;
 	}
-	cout <<"©Ò¦³ª±®a¦WºÙ:"<<endl;
+	cout <<"æ‰€æœ‰çŽ©å®¶åç¨±:"<<endl;
 	for(int i = 0;i<num_player;i++)
 	{
 		cout << uno1.list[i].name<<endl;
@@ -25,14 +25,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	uno1.shuffle();
 	uno1.deal();
-	////¥H¤U¬°ÀË¬d
+	////ï¿½Hï¿½Uï¿½ï¿½ï¿½Ë¬d
 	//for(int i = 0;i<uno1.tableCard.num_card;i++)
 	//{
 	//	uno1.tableCard.stack[i].show();
 	//	if(i%5 == 0 && i!=0)
 	//		cout<<endl;
 	//}
-	////¥H¤W¬°ÀË¬d
+	////ï¿½Hï¿½Wï¿½ï¿½ï¿½Ë¬d
 	uno1.Game();
 
 	
