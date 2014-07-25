@@ -22,9 +22,19 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		cout << uno1.list[i].name<<endl;
 	}
+	
 	uno1.shuffle();
 	uno1.deal();
+	////以下為檢查
+	//for(int i = 0;i<uno1.tableCard.num_card;i++)
+	//{
+	//	uno1.tableCard.stack[i].show();
+	//	if(i%5 == 0 && i!=0)
+	//		cout<<endl;
+	//}
+	////以上為檢查
 	uno1.Game();
+
 	
 	cout <<endl;
 
