@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include"stdafx.h"
 #include<iostream>
 #include"UNO.h"
 #include<string>
@@ -6,7 +6,6 @@ using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	
 	int num_player = 0;
 	cout << "輸入遊戲人數:";
 	cin  >> num_player;
@@ -22,22 +21,9 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		cout << uno1.list[i].name<<endl;
 	}
-	
 	uno1.shuffle();
 	uno1.deal();
-	////以下為檢查
-	//for(int i = 0;i<uno1.tableCard.num_card;i++)
-	//{
-	//	uno1.tableCard.stack[i].show();
-	//	if(i%5 == 0 && i!=0)
-	//		cout<<endl;
-	//}
-	////以上為檢查
 	uno1.Game();
-
-	
 	cout <<endl;
-
-	
 	return 0;
 }
