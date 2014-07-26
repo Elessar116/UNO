@@ -1,7 +1,5 @@
 #include"stdafx.h"
-#include<iostream>
 #include"UNO.h"
-#include<string>
 using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
